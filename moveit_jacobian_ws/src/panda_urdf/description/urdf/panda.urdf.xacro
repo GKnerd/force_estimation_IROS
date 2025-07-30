@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="$(arg name)">
+
+    <!--INCLUDES-->
+    <!-- Include XACRO-MACRO file of the PANDA ROBOT: -->
+    <xacro:include filename="$(find panda_urdf)/urdf/panda_macro.urdf.xacro"/>	
+
+    <!-- Import PANDA ros2_control description -->
+    <!--WITHOUT MIMIC JOINTS-->
+    <xacro:include filename="$(find panda_urdf)/ros2_control/panda_position.ros2_control.xacro" />
+
+    <!-- Include PANDA transmission description-->
+    <xacro:include filename="$(find panda_urdf)/urdf/transmissions.urdf.xacro" />
+
+    <!-- Iclude PANDA Gazebo Fortress definitions-->
+    <xacro:include filename="$(find panda_urdf)/gazebo/panda.gazebo.xacro" />
+    
+    <!--ARGUMENTS-->
+    
+    <!-- The ros2_control plugin that should be loaded for the manipulator ('fake' or 'ign') -->
+    <xacro:arg name="ros2_control_plugin" default="fake"/>
+    <!-- Name of the robot (mandatory) -->
+    <xacro:arg name="name" default="panda"/>
+    <!-- Prefix -->
+    <xacro:arg name="prefix" default="" />
+    
+    <!-- Used for fixing robot to the world-->
+    <link name="world"/>
+
+    <!-- Instantiate the Macros-->
+    <xacro:panda parent="world" prefix="$(arg prefix)">
+        <origin xyz="0 0.0 0" rpy="0 0 0" /> 
+    </xacro:panda> 
+    <!-- <xacro:panda_ros2_control_effort name="$(arg name)" prefix="$(arg prefix)" plugin = "$(arg ros2_control_plugin)"/> -->
+    <!-- <xacro:panda_gazebo prefix="$(arg prefix)"/> -->
+    <!-- <xacro:panda_transmissions prefix="$(arg prefix)"/>  -->
+  
+
+</robot>

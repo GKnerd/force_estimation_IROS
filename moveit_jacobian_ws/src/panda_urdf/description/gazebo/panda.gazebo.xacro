@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="panda_gazebo" params= "prefix">
+   
+    <!-- ign_ros2_control plugin -->
+    
+    <gazebo>
+      <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <parameters>$(find hrc_space_bringup)/config/joint_ros2_position_controllers.yaml</parameters>
+        <!-- <parameters>$(find panda_moveit2_config)/ros2_controllers/ros2_position_controller_namespaced.yaml</parameters> -->
+        <!-- <parameters>$(find panda_moveit2_config)/config/ros2_effort_controller.yaml</parameters> -->
+        <!-- <parameters>$(find panda_moveit2_config)/config/ros2_position_controller_w_mimic_joints.yaml</parameters> -->
+          <robot_param>robot_description</robot_param>
+          <robot_param_node>robot_state_publisher</robot_param_node> 
+          <ros>
+            <namespace>panda</namespace>
+          </ros>
+      </plugin>
+    </gazebo>
+
+    <!-- IMU inside Ignition-->
+    <gazebo reference="panda_link7">
+      <sensor type="imu" name="imu_sensor">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <topic>/panda_imu</topic>
+        <imu>
+          <angular_velocity>
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.0</stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.0</stddev>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.0</stddev>
+              </noise>
+            </z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.0</stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.0</stddev>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.0</stddev>
+              </noise>
+            </z>
+          </linear_acceleration>
+        </imu>
+      </sensor>
+    </gazebo>
+
+    <!-- Force/Torque sensors for the different joints-->
+    <gazebo reference="panda_joint5">
+      <sensor type="force_torque" name="force_torque_sensor">
+          <topic>/panda_force_torque_joint5</topic>
+          <update_rate>100</update_rate>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+      </sensor>
+    </gazebo>
+
+    <gazebo reference="panda_joint6">
+      <sensor type="force_torque" name="force_torque_sensor">
+          <topic>/panda_force_torque_joint6</topic>
+          <update_rate>100</update_rate>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+      </sensor>
+    </gazebo>
+
+    <gazebo reference="panda_joint7">
+      <sensor type="force_torque" name="force_torque_sensor">
+          <topic>/panda_force_torque_joint7</topic>
+          <update_rate>100</update_rate>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+      </sensor>
+    </gazebo>
+
+    <gazebo reference="panda_finger_joint1">
+      <sensor type="force_torque" name="force_torque_sensor">
+          <topic>/panda_force_torque_finger_joint1</topic>
+          <update_rate>100</update_rate>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+      </sensor>
+    </gazebo>
+
+    <gazebo reference="panda_finger_joint2">
+      <sensor type="force_torque" name="force_torque_sensor">
+          <topic>/panda_force_torque_finger_joint2</topic>
+          <update_rate>100</update_rate>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+      </sensor>
+    </gazebo>
+
+    <gazebo reference="{prefix}panda_link0">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="{prefix}panda_link1">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="{prefix}panda_link2">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="{prefix}panda_link3">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="{prefix}panda_link4">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="{prefix}panda_link5">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="{prefix}panda_link6">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="{prefix}panda_link7">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="{prefix}panda_link8">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="{prefix}panda_hand">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="{prefix}panda_leftfinger">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="{prefix}panda_rightfinger">
+      <selfCollide>false</selfCollide>
+    </gazebo>
+
+    <!-- Preserve fixed joints in Gazebo-->
+    <gazebo reference="{prefix}panda_hand_joint">
+      <preserveFixedJoint>true</preserveFixedJoint>
+      <disableFixedJointLumping>true</disableFixedJointLumping>
+    </gazebo>
+
+    <gazebo reference="{prefix}panda_hand_tcp_virtual_joint">
+      <preserveFixedJoint>true</preserveFixedJoint>
+      <disableFixedJointLumping>true</disableFixedJointLumping>
+    </gazebo>
+
+
+    <!--Friction Coefficients-->
+    
+    <!-- Link0 -->
+    <gazebo reference="{prefix}panda_link0">
+      <mu1 value = "0.85"/>
+      <mu2 value = "0.85"/>
+    </gazebo>
+
+    <!-- Link1-->
+    <gazebo reference="{prefix}panda_link1">
+      <mu1 value = "0.85"/>
+      <mu2 value = "0.85"/>
+    </gazebo>
+
+    <!-- Link2 -->
+    <gazebo reference="{prefix}panda_link2">
+      <mu1 value = "0.85"/>
+      <mu2 value = "0.85"/>
+    </gazebo>
+
+    <!-- Link3 -->
+    <gazebo reference="{prefix}panda_link3">
+      <mu1 value = "0.85"/>
+      <mu2 value = "0.85"/>
+    </gazebo>
+
+    <!-- Link4 -->
+    <gazebo reference="{prefix}panda_link4">
+      <mu1 value = "0.85"/>
+      <mu2 value = "0.85"/>
+    </gazebo>
+
+    <!-- Link5 -->
+    <gazebo reference="{prefix}panda_link5">
+      <mu1 value = "0.85"/>
+      <mu2 value = "0.85"/>
+    </gazebo>
+
+    <!-- Link6 -->
+    <gazebo reference="{prefix}panda_link6">
+      <mu1 value = "0.85"/>
+      <mu2 value = "0.85"/>
+    </gazebo>
+
+    <!-- Link7 -->
+    <gazebo reference="{prefix}panda_link7">
+      <mu1 value = "0.85"/>
+      <mu2 value = "0.85"/>
+    </gazebo>
+
+    <!-- Hand -->
+    <gazebo reference="{prefix}panda_hand">
+      <mu1 value = "0.85"/>
+      <mu2 value = "0.85"/>
+    </gazebo>
+
+    <!-- Left finger -->
+    <gazebo reference="{prefix}panda_leftfinger">
+      <mu1 value = "1.13"/>
+      <mu2 value = "1.13"/>
+    </gazebo>
+
+    <!-- Right finger -->
+    <gazebo reference="{prefix}panda_rightfinger">
+      <mu1 value = "1.13"/>
+      <mu2 value = "1.13"/>
+    </gazebo>
+
+     <!--Joint1-->
+    <gazebo reference="{prefix}panda_joint1">
+      <springStiffness value="0.0"/>
+      <springReference value="0.0"/>
+    </gazebo>
+
+    <!--Joint2-->
+    <gazebo reference="{prefix}panda_joint2">
+      <springStiffness value="0.0"/>
+      <springReference value="0.0"/>
+    </gazebo>
+
+    <!--Joint3-->
+    <gazebo reference="{prefix}panda_joint3">
+      <springStiffness value="0.0"/>
+      <springReference value="0.0"/>
+    </gazebo>
+
+    <!--Joint4-->
+    <gazebo reference="{prefix}panda_joint4">
+      <springStiffness value="0.0"/>
+      <springReference value="0.0"/>
+    </gazebo>
+    
+    <!--Joint5-->
+    <gazebo reference="{prefix}panda_joint5">
+      <springStiffness value="0.0"/>
+      <springReference value="0.0"/>
+    </gazebo>
+
+    <!--Joint6-->
+    <gazebo reference="panda_joint6">
+      <springStiffness value="0.0"/>
+      <springReference value="0.0"/>
+    </gazebo>
+
+    <!--Joint7-->
+    <gazebo reference="{prefix}panda_joint7">
+      <springStiffness value="0.0"/>
+      <springReference value="0.0"/>
+    </gazebo>
+    
+    <!--Finger Joint 1-->
+    <gazebo reference="{prefix}panda_finger_joint1">
+      <springStiffness value="0.0"/>
+      <springReference value="0.0"/>
+    </gazebo>
+    
+    <gazebo reference="{prefix}panda_finger_joint2">
+      <springStiffness value="0.0"/>
+      <springReference value="0.0"/>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>

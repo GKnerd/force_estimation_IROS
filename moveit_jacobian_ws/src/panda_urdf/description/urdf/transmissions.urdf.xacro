@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="panda_transmissions" params= "prefix">
+
+    <transmission name="panda_joint1_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="panda_joint1">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="panda_joint1_actuator">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <transmission name="panda_joint2_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="panda_joint2">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="panda_joint2_actuator">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <transmission name="panda_joint3_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="panda_joint3">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="panda_joint3_actuator">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <transmission name="panda_joint4_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="panda_joint4">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="panda_joint4_actuator">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <transmission name="panda_joint5_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="panda_joint5">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="panda_joint5_actuator">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <transmission name="panda_joint6_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="panda_joint6">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="panda_joint6_actuator">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <transmission name="panda_joint7_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="panda_joint7">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="panda_joint7_actuator">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+
+    <transmission name="panda_finger_joint1_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="panda_finger_joint1">
+             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="panda_finger_joint1_actuator">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <transmission name="panda_finger_joint2_transmission">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="panda_finger_joint2">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="panda_finger_joint2_actuator">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+
+  </xacro:macro>
+</robot>
