@@ -1,59 +1,77 @@
 import numpy as np
-from pathlib import Path
 import matplotlib.pyplot as plt
-from joint_data_preprocessing.json_helper import parse_json
+from pathlib import Path
 import json
+from json_helper import parse_json
 
 
-#JSON Files
-torques_modeled_file = Path("/home/georgios-katranis/Projects/IROS_Paper_2025/datasets/handover_danger/external_force_estimates/torque_values/computed_joint_torques_handover_danger.json")
-torques_measured_file = Path("/home/georgios-katranis/Projects/IROS_Paper_2025/datasets/handover_danger/external_force_estimates/joint_states/vectorial_joint_data.json")
+# --- Config ---
+SHOW_PLOTS = False  # Set True to display plots interactively
 
-# Output JSON file for residuals
-residuals_file = Path("/home/georgios-katranis/Projects/IROS_Paper_2025/datasets/handover_danger/external_force_estimates/torque_values/torque_residuals.json")
+# --- Paths ---
+project_root = Path.cwd()
+datasets_dir = project_root / "datasets"
 
-# JSON Dicts
-torques_measured_dict = parse_json(torques_measured_file)
-torques_modeled_dict = parse_json(torques_modeled_file)
+for scenario_dir in datasets_dir.iterdir():
+    if not scenario_dir.is_dir():
+        continue
+    
+    scenario_name = scenario_dir.name
+    ext_force_dir = scenario_dir / "external_force_estimates"
+    joint_states_file = ext_force_dir / "joint_states" / "aggregated_joint_states.json"
+    torque_values_dir = ext_force_dir / "torque_values"
+    modeled_torque_file = torque_values_dir / f"computed_torques.json"
+    residuals_file = torque_values_dir / "torque_residuals.json"
+    residuals_plot_file = torque_values_dir / "torque_residuals_plot.png"
 
-# torques_measured = torques_measured_dict["tau"]
-# torques_modeled = torques_modeled_dict["torques"]
+    # Check input files
+    if not joint_states_file.exists() or not modeled_torque_file.exists():
+        print(f"[SKIP] {scenario_name}: Required input files not found.")
+        continue
 
-# print(f"Length of measured torque list: {len(torques_measured)} and \n Length of modeled torques list: {len(torques_modeled)}")
-# # print(f"Measured torque list: {torques_measured} and \n Modeled torques list: {torques_modeled}")
+    print(f"[PROCESSING] {scenario_name}")
 
-# # Extract torque data
-torques_measured = np.array(torques_measured_dict["tau"])# Shape (7, N)
-torques_modeled = np.array(torques_modeled_dict["torques"])  # Shape (7, N)
+    # Load torques
+    torques_measured_dict = parse_json(joint_states_file)
+    torques_modeled_dict = parse_json(modeled_torque_file)
 
-# Compute residuals
-residuals = torques_measured - torques_modeled
-# Print shape to confirm
-print(f"Residuals shape: {residuals.shape}")  
+    torques_measured = np.array(torques_measured_dict["tau"])
+    torques_modeled = np.array(torques_modeled_dict["torques"])
 
-# Save residuals to JSON file (preserving shape)
-residuals_dict = {"residuals": residuals.tolist()}  # Convert NumPy array to list
-with open(residuals_file, "w") as f:
-    json.dump(residuals_dict, f, indent=4)
+    # Shape correction
+    if torques_measured.shape[1] != 7:
+        torques_measured = torques_measured.T
+    if torques_modeled.shape[1] != 7:
+        torques_modeled = torques_modeled.T
 
+    # Residuals
+    residuals = torques_measured - torques_modeled
+    print(f"Residuals shape: {residuals.shape}")
 
-# Ensure the shape is correct (reshape if necessary)
-if residuals.shape[0] != 7:
-    residuals = residuals.T  # Transpose if needed
-    print(f"Transposed residuals shape: {residuals.shape}")  # Should now be (7, 2516)
+    # Save residuals to JSON
+    residuals_dict = {"residuals": residuals.tolist()}
+    with open(residuals_file, "w") as f:
+        json.dump(residuals_dict, f, indent=4)
 
-# Plot residuals
-plt.figure(figsize=(12, 8))
-joint_labels = [f'Joint {i+1}' for i in range(7)]
+    print(f"[SAVED] Residuals → {residuals_file}")
 
-for i in range(7):
-    plt.subplot(4, 2, i+1)
-    plt.plot(residuals[i], label=f'Residuals Joint {i+1}')
-    plt.ylim(0,10)
-    plt.xlabel('Time Step')
-    plt.ylabel('Torque Residual')
-    plt.legend()
-    plt.grid()
+    # --- Save Residual Plot ---
+    plt.figure(figsize=(12, 8))
+    for i in range(7):
+        plt.subplot(4, 2, i+1)
+        plt.plot(residuals[:, i], label=f'Joint {i+1}')
+        plt.xlabel("Time Step")
+        plt.ylabel("Torque Residual")
+        plt.title(f"Joint {i+1}")
+        plt.ylim(0, 10)
+        plt.grid(True)
+        plt.legend()
 
-plt.tight_layout()
-plt.show()
+    plt.tight_layout()
+    plt.savefig(residuals_plot_file)
+    print(f"[SAVED] Residual plot → {residuals_plot_file}")
+
+    if SHOW_PLOTS:
+        plt.show()
+
+    plt.close()

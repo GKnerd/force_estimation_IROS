@@ -1,6 +1,6 @@
 import numpy as np
 from pathlib import Path
-from joint_data_preprocessing.json_helper import parse_json
+from json_helper import parse_json
 import matplotlib.pyplot as plt
 from scipy.linalg import pinv
 
@@ -19,14 +19,14 @@ def plot_force_magnitude(magnitude_array, label, color):
 
 
 ## NON DANGEROUS ##
-no_danger_jacobian_dir = Path("/home/georgios-katranis/Projects/IROS_Paper_2025/datasets/handover_danger/external_force_estimates/jacobians/jacobian_matrices.json")
-no_danger_residual_torques = Path("/home/georgios-katranis/Projects/IROS_Paper_2025/datasets/handover_danger/external_force_estimates/torque_values/torque_residuals.json")
+no_danger_jacobian_dir = Path("/home/georgios-katranis/IROS_force_estimation/datasets/handover_danger/external_force_estimates/jacobians/jacobian_matrices.json")
+no_danger_residual_torques = Path("/home/georgios-katranis/IROS_force_estimation/datasets//handover_danger/external_force_estimates/torque_values/torque_residuals.json")
 
 no_danger_jacobian_dict = parse_json(no_danger_jacobian_dir)
 
 ## DANGEROUS ##
-danger_jacobian_dir = Path("/home/georgios-katranis/Projects/IROS_Paper_2025/datasets/handover_danger/external_force_estimates/jacobians/jacobian_matrices.json")
-danger_residual_torques = Path("/home/georgios-katranis/Projects/IROS_Paper_2025/datasets/handover_danger/external_force_estimates/torque_values/torque_residuals.json")
+danger_jacobian_dir = Path("/home/georgios-katranis/IROS_force_estimation/datasets//handover_danger/external_force_estimates/jacobians/jacobian_matrices.json")
+danger_residual_torques = Path("/home/georgios-katranis/IROS_force_estimation/datasets//handover_danger/external_force_estimates/torque_values/torque_residuals.json")
 
 danger_jacobian_dict = parse_json(danger_jacobian_dir)
 
