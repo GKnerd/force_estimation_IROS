@@ -41,7 +41,7 @@ target_include_directories(${FRANKA_MODEL_LIBRARY} PUBLIC include)
 set_target_properties(${FRANKA_MODEL_LIBRARY} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 ## Declare a C++ executable
-add_executable(Panda_Model src/PandaDynamicModel.cpp)
+add_executable(Panda_Model src/PandaModel.cpp)
 
 ## Link Libraries
 target_link_libraries(
